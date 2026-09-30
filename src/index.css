@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-editorial: 'Playfair Display', serif;
+
+  --color-primary: #8d4f00;
+  --color-primary-container: #f39223;
+  --color-on-primary: #ffffff;
+  --color-secondary: #396754;
+  --color-secondary-dark: #1e4d3b;
+  --color-secondary-container: #bbeed5;
+  --color-on-secondary-container: #3f6d5a;
+  --color-tertiary: #366851;
+  --color-tertiary-container: #80b49a;
+  
+  --color-surface-light: #f1fcf7;
+  --color-surface-card: #ffffff;
+  --color-surface-dim: #ebf6f1;
+  
+  --color-dark-bg: #111a17;
+  --color-dark-surface: #172420;
+  --color-dark-card: #1d2d28;
+  --color-dark-border: #283e37;
+}
+
+/* Custom Utilities for smooth animations and aesthetics */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .cta-glow {
+    box-shadow: 0 4px 18px rgba(243, 146, 35, 0.35);
+  }
+  
+  .card-shadow {
+    box-shadow: 0 4px 20px -2px rgba(24, 44, 35, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  }
+  
+  .card-shadow-hover {
+    box-shadow: 0 14px 34px -4px rgba(24, 44, 35, 0.12), 0 6px 14px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .hero-mask {
+    clip-path: ellipse(125% 100% at 50% 0%);
+  }
+}
+
+/* Base typography refinements */
+body {
+  font-family: var(--font-sans);
+}

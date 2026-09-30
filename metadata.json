@@ -1,0 +1,6 @@
+{
+  "name": "JalanYuk - Platform Perjalanan & Ekspedisi Alam Autentik",
+  "description": "Platform kurasi perjalanan alam, eco-luxury tour, dan petualangan liveaboard nomor satu dengan animasi interaktif, dukungan dark mode, dan performa tinggi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
