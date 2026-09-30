@@ -19,6 +19,7 @@ interface NavbarProps {
   onOpenCustomizer: () => void;
   onNavigateHome: () => void;
   activeSection: string;
+  onOpenAllDestinations?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -27,7 +28,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   wishlistCount,
   onOpenCustomizer,
   onNavigateHome,
-  activeSection
+  activeSection,
+  onOpenAllDestinations
 }) => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -109,10 +111,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           
           {/* Search Trigger */}
           <button
-            onClick={onOpenSearch}
+            onClick={onOpenAllDestinations || onOpenSearch}
             aria-label="Cari Destinasi"
             className="w-10 h-10 rounded-full flex items-center justify-center text-[#544435] dark:text-[#d1ddd8] hover:text-[#396754] hover:bg-[#e5f0eb] dark:hover:bg-[#1d2d28] transition-all cursor-pointer active:scale-95"
-            title="Cari Destinasi (Ctrl + K)"
+            title="Cari Semua Destinasi"
           >
             <Search className="w-5 h-5" />
           </button>

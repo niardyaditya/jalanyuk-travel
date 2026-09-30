@@ -18,16 +18,25 @@ import {
   ArrowRight,
   Camera,
   Compass,
+  Leaf,
   Check
 } from 'lucide-react';
 import { Destination } from '../../types/travel';
+
+export interface BookingInitialConfig {
+  adultCount: number;
+  childCount: number;
+  selectedBatch: string;
+  addonDrone: boolean;
+  addonSuite: boolean;
+}
 
 interface DestinationDetailProps {
   destination: Destination;
   allDestinations: Destination[];
   onBack: () => void;
   onSelectAlternative: (id: string) => void;
-  onOpenBooking: () => void;
+  onOpenBooking: (config?: BookingInitialConfig) => void;
   onOpenLightbox: (index: number) => void;
   onOpenReviewModal: () => void;
   isWishlisted: boolean;
@@ -118,9 +127,9 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({
         {/* Destination Header Title & Badges */}
         <div className="mb-6 space-y-2">
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="px-3 py-1 rounded-full bg-[#bbeed5] text-[#182C23] text-xs font-bold inline-flex items-center gap-1 shadow-sm">
-              <Compass className="w-3.5 h-3.5" />
-              Eco-Certified 🌿
+            <span className="px-3 py-1 rounded-full bg-[#bbeed5] text-[#182C23] text-xs font-bold inline-flex items-center gap-1.5 shadow-sm">
+              <Leaf className="w-3.5 h-3.5 text-[#182C23]" />
+              Eco-Certified
             </span>
             <span className="px-3 py-1 rounded-full bg-[#e5f0eb] dark:bg-[#253831] text-[#141e1b] dark:text-white text-xs font-semibold">
               {destination.duration} • {destination.tripType}
@@ -786,7 +795,13 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({
                 {/* Action Buttons */}
                 <div className="space-y-2 pt-1">
                   <button
-                    onClick={onOpenBooking}
+                    onClick={() => onOpenBooking({
+                      adultCount,
+                      childCount,
+                      selectedBatch,
+                      addonDrone,
+                      addonSuite
+                    })}
                     className="w-full py-3.5 rounded-full bg-[#f39223] text-white text-sm font-bold shadow-lg cta-glow hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Pesan Petualangan Sekarang</span>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, Heart, MapPin, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { Star, Heart, MapPin, ArrowUpRight, ArrowRight, Compass } from 'lucide-react';
 import { Destination, TripCategory } from '../../types/travel';
 
 interface PopularDestinationsProps {
@@ -8,6 +8,7 @@ interface PopularDestinationsProps {
   onSelectDestination: (id: string) => void;
   onToggleWishlist: (id: string) => void;
   wishlistIds: string[];
+  onOpenAllDestinations: () => void;
 }
 
 const CATEGORIES: TripCategory[] = [
@@ -23,7 +24,8 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
   destinations,
   onSelectDestination,
   onToggleWishlist,
-  wishlistIds
+  wishlistIds,
+  onOpenAllDestinations
 }) => {
   const [activeCategory, setActiveCategory] = useState<TripCategory>('Semua');
 
@@ -40,7 +42,13 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#ebf6f1]/60 dark:bg-[#15201c] border-y border-[#dac2af]/20 dark:border-[#283e37] transition-colors" id="destinasi">
+    <section 
+      className="relative py-16 md:py-24 bg-[#ebf6f1]/60 dark:bg-[#15201c] border-y border-[#dac2af]/20 dark:border-[#283e37] transition-colors" 
+      id="destinasi"
+    >
+      {/* Anchor for destinasi-populer */}
+      <div id="destinasi-populer" className="absolute -top-24 h-24" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -54,16 +62,19 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
             </h2>
           </div>
 
-          <button
-            onClick={() => setActiveCategory('Semua')}
-            className="inline-flex items-center gap-2 text-[#8d4f00] dark:text-[#ffb875] text-sm font-bold group hover:text-[#5e3300] transition-colors cursor-pointer self-start md:self-auto"
+          {/* Trigger All Destinations Catalog Modal */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onOpenAllDestinations}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-[#1d2d28] border border-[#dac2af]/40 dark:border-[#283e37] text-[#8d4f00] dark:text-[#ffb875] text-sm font-bold shadow-xs hover:border-[#8d4f00] dark:hover:border-[#ffb875] transition-colors cursor-pointer self-start md:self-auto transform-gpu"
           >
             <span>Lihat Semua Destinasi ({destinations.length})</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
+          </motion.button>
         </div>
 
-        {/* Category Filter Chips */}
+        {/* Category Filter Chips with Animated Indicators */}
         <div className="flex items-center gap-2.5 overflow-x-auto pb-6 no-scrollbar">
           {CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat;
@@ -71,7 +82,7 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer active:scale-95 ${
+                className={`relative px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer active:scale-95 ${
                   isActive
                     ? 'bg-[#182C23] text-white shadow-md'
                     : 'bg-white dark:bg-[#1d2d28] text-[#544435] dark:text-[#d1ddd8] border border-[#dac2af]/40 dark:border-[#283e37] hover:border-[#396754] hover:text-[#396754] dark:hover:text-[#bbeed5]'
@@ -83,23 +94,28 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
           })}
         </div>
 
-        {/* Destinations Cards Grid */}
+        {/* Destinations Cards Grid with Smooth Framer Motion */}
         <motion.div 
           layout
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2"
         >
-          <AnimatePresence>
-            {filteredDestinations.map((dest) => {
+          <AnimatePresence mode="popLayout">
+            {filteredDestinations.map((dest, idx) => {
               const isWishlisted = wishlistIds.includes(dest.id);
               return (
                 <motion.article
                   key={dest.id}
                   layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white dark:bg-[#1d2d28] rounded-2xl border border-[#dac2af]/30 dark:border-[#283e37] overflow-hidden card-shadow hover:card-shadow-hover transition-all duration-300 flex flex-col group"
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                  transition={{ 
+                    duration: 0.35, 
+                    delay: idx * 0.04,
+                    ease: 'easeOut' 
+                  }}
+                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                  className="bg-white dark:bg-[#1d2d28] rounded-2xl border border-[#dac2af]/30 dark:border-[#283e37] overflow-hidden card-shadow hover:card-shadow-hover transition-shadow duration-300 flex flex-col group transform-gpu"
                 >
                   {/* Image container 4:3 */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -108,9 +124,8 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
                       alt={dest.name}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-106 transform-gpu"
                       onError={(e) => {
-                        // Fallback gracefully if network drops
                         (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80';
                       }}
                     />
@@ -150,8 +165,8 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
                   <div className="p-5 flex flex-col flex-1 justify-between">
                     <div>
                       <div className="flex items-center gap-1.5 text-[#396754] dark:text-[#bbeed5] text-xs font-semibold mb-1.5">
-                        <MapPin className="w-3.5 h-3.5" />
-                        <span>{dest.province}, {dest.country}</span>
+                        <MapPin className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">{dest.province}, {dest.country}</span>
                       </div>
                       <h3 className="text-base sm:text-lg font-bold text-[#141e1b] dark:text-white group-hover:text-[#396754] dark:group-hover:text-[#bbeed5] transition-colors line-clamp-1">
                         {dest.name}
@@ -176,10 +191,10 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
                       <button
                         onClick={() => onSelectDestination(dest.id)}
                         aria-label={`Lihat detail ${dest.name}`}
-                        className="w-10 h-10 rounded-full bg-[#bbeed5] dark:bg-[#396754] text-[#182C23] dark:text-white hover:bg-[#182C23] hover:text-white dark:hover:bg-[#bbeed5] dark:hover:text-[#182C23] flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer shadow-sm"
+                        className="w-10 h-10 rounded-full bg-[#bbeed5] dark:bg-[#396754] text-[#182C23] dark:text-white hover:bg-[#182C23] hover:text-white dark:hover:bg-[#bbeed5] dark:hover:text-[#182C23] flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer shadow-sm group-hover:rotate-45"
                         title="Lihat Detail Ekspedisi"
                       >
-                        <ArrowUpRight className="w-5 h-5" />
+                        <ArrowUpRight className="w-5 h-5 transition-transform" />
                       </button>
                     </div>
                   </div>
@@ -188,6 +203,20 @@ export const PopularDestinations: React.FC<PopularDestinationsProps> = ({
             })}
           </AnimatePresence>
         </motion.div>
+
+        {/* Bottom Callout to Open Full Catalog */}
+        <div className="mt-12 text-center">
+          <motion.button
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onOpenAllDestinations}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white dark:bg-[#1d2d28] border-2 border-[#182C23] dark:border-[#396754] text-[#182C23] dark:text-white font-bold text-sm hover:bg-[#182C23] hover:text-white dark:hover:bg-[#396754] shadow-md transition-all duration-200 cursor-pointer transform-gpu"
+          >
+            <Compass className="w-4 h-4 text-[#f39223]" />
+            <span>Jelajahi Seluruh {destinations.length} Destinasi & Paket Lengkap</span>
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
+        </div>
 
       </div>
     </section>

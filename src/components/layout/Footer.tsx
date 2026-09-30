@@ -4,9 +4,14 @@ import { Compass, Camera, Play, Music, Briefcase, ArrowUp, Headset, Lock, Check 
 interface FooterProps {
   onSelectDestination: (id: string) => void;
   onNavigateHome: () => void;
+  onOpenAllDestinations?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onSelectDestination, onNavigateHome }) => {
+export const Footer: React.FC<FooterProps> = ({ 
+  onSelectDestination, 
+  onNavigateHome,
+  onOpenAllDestinations 
+}) => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -135,6 +140,16 @@ export const Footer: React.FC<FooterProps> = ({ onSelectDestination, onNavigateH
                   Ubud Bali & Nusa Penida
                 </button>
               </li>
+              {onOpenAllDestinations && (
+                <li className="pt-1">
+                  <button 
+                    onClick={onOpenAllDestinations} 
+                    className="text-[#ffb875] font-bold hover:underline transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    <span>Lihat Semua Destinasi →</span>
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 

@@ -19,11 +19,13 @@ import { StatsCounter } from './components/home/StatsCounter';
 
 // Detail & Modal Components
 import { DestinationDetail } from './components/detail/DestinationDetail';
-import { TripCustomizerModal } from './components/customizer/TripCustomizerModal';
+import { TripCustomizerModal, BookingInitialConfig } from './components/customizer/TripCustomizerModal';
 import { LightboxModal } from './components/modals/LightboxModal';
 import { ReviewModal } from './components/modals/ReviewModal';
 import { WishlistDrawer } from './components/modals/WishlistDrawer';
 import { StoryModal } from './components/modals/StoryModal';
+import { ExperienceVideoModal } from './components/modals/ExperienceVideoModal';
+import { AllDestinationsModal } from './components/modals/AllDestinationsModal';
 import { Toast, ToastMessage } from './components/common/Toast';
 
 export function JalanYukApp() {
@@ -54,6 +56,13 @@ export function JalanYukApp() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [bookingDestination, setBookingDestination] = useState<Destination>(DESTINATIONS[0]);
   const [appliedPromo, setAppliedPromo] = useState('JALANYUK25');
+  const [bookingInitialConfig, setBookingInitialConfig] = useState<BookingInitialConfig | undefined>(undefined);
+
+  // Video Experience Modal State
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  // All Destinations Full Catalog Modal State
+  const [isAllDestinationsOpen, setIsAllDestinationsOpen] = useState(false);
 
   // Lightbox State
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -129,7 +138,7 @@ export function JalanYukApp() {
     }
 
     setTimeout(() => {
-      const el = document.getElementById('destinasi-populer');
+      const el = document.getElementById('destinasi-populer') || document.getElementById('destinasi');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
       }
@@ -145,8 +154,9 @@ export function JalanYukApp() {
   };
 
   // Open booking modal
-  const handleOpenBooking = (dest: Destination) => {
+  const handleOpenBooking = (dest: Destination, config?: BookingInitialConfig) => {
     setBookingDestination(dest);
+    setBookingInitialConfig(config);
     setIsBookingOpen(true);
   };
 
@@ -244,6 +254,7 @@ export function JalanYukApp() {
           }
         }}
         activeSection={activeDestination ? 'destinasi' : 'home'}
+        onOpenAllDestinations={() => setIsAllDestinationsOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -261,7 +272,7 @@ export function JalanYukApp() {
               setActiveDestinationId(id);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            onOpenBooking={() => handleOpenBooking(activeDestination)}
+            onOpenBooking={(cfg) => handleOpenBooking(activeDestination, cfg)}
             onOpenLightbox={(idx) =>
               handleOpenLightbox(activeDestination.gallery.map((g) => g.url), idx, activeDestination.name)
             }
@@ -276,13 +287,14 @@ export function JalanYukApp() {
             {/* Hero Slider with Slide Animations */}
             <HeroSlider
               onStartAdventure={() => {
-                const el = document.getElementById('destinasi-populer');
+                const el = document.getElementById('destinasi-populer') || document.getElementById('destinasi');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
               onSelectDestination={(id: string) => {
                 setActiveDestinationId(id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              onOpenVideoModal={() => setIsVideoModalOpen(true)}
             />
 
             {/* Floating Search & Booking Console */}
@@ -300,6 +312,7 @@ export function JalanYukApp() {
               }}
               wishlistIds={wishlistIds}
               onToggleWishlist={toggleWishlist}
+              onOpenAllDestinations={() => setIsAllDestinationsOpen(true)}
             />
 
             {/* Holiday Promo Banner with Interactive Voucher */}
@@ -327,6 +340,7 @@ export function JalanYukApp() {
           setActiveDestinationId(null);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
+        onOpenAllDestinations={() => setIsAllDestinationsOpen(true)}
       />
 
       {/* Modals & Drawers */}
@@ -335,7 +349,13 @@ export function JalanYukApp() {
         onClose={() => setIsBookingOpen(false)}
         destination={bookingDestination}
         appliedPromo={appliedPromo}
+        initialConfig={bookingInitialConfig}
         onSuccessBooking={handleSuccessBooking}
+      />
+
+      <ExperienceVideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
       />
 
       <LightboxModal
@@ -369,6 +389,24 @@ export function JalanYukApp() {
         story={activeStory}
         onClose={() => setActiveStory(null)}
         onShare={(title) => handleShare(title)}
+      />
+
+      {/* All Destinations Full Catalog Modal */}
+      <AllDestinationsModal
+        isOpen={isAllDestinationsOpen}
+        onClose={() => setIsAllDestinationsOpen(false)}
+        destinations={destinations}
+        onSelectDestination={(id) => {
+          setActiveDestinationId(id);
+          setIsAllDestinationsOpen(false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenBooking={(dest) => {
+          setIsAllDestinationsOpen(false);
+          handleOpenBooking(dest);
+        }}
+        wishlistIds={wishlistIds}
+        onToggleWishlist={toggleWishlist}
       />
 
       {/* Toast Notifications */}

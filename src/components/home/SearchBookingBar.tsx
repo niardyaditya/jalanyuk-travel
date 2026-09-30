@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { MapPin, Calendar, Clock, Users, Search } from 'lucide-react';
 
 interface SearchBookingBarProps {
@@ -107,13 +108,15 @@ export const SearchBookingBar: React.FC<SearchBookingBarProps> = ({ onSearchSubm
           </div>
 
           {/* Forest Green Round Search Action */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.94 }}
             type="submit"
             aria-label="Cari Destinasi"
-            className="w-12 h-12 rounded-full bg-[#182C23] hover:bg-[#396754] text-white flex items-center justify-center transition-transform active:scale-95 shadow-md shrink-0 cursor-pointer"
+            className="w-12 h-12 rounded-full bg-[#182C23] hover:bg-[#396754] text-white flex items-center justify-center transition-colors shadow-md shrink-0 cursor-pointer transform-gpu"
           >
             <Search className="w-5 h-5 text-white" />
-          </button>
+          </motion.button>
         </div>
       </form>
     </div>
