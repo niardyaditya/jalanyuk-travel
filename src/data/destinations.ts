@@ -16,6 +16,7 @@ export const DESTINATIONS: Destination[] = [
     tripType: 'Phinisi Liveaboard',
     pricePerPerson: 5850000,
     featured: true,
+    videoUrl: 'https://youtu.be/CwspQBVrJzQ?si=lp_XASXlokpUTIMX',
     imageUrl: 'https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
@@ -183,6 +184,7 @@ export const DESTINATIONS: Destination[] = [
     tripType: 'Phinisi Cruise',
     pricePerPerson: 4200000,
     featured: true,
+    videoUrl: 'https://youtu.be/MDqW4aYi5Oc?si=_EJuz8VI3VuAEaKY',
     imageUrl: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {
@@ -295,6 +297,7 @@ export const DESTINATIONS: Destination[] = [
     tripType: 'Jeep 4x4 Sunrise Trip',
     pricePerPerson: 1750000,
     featured: true,
+    videoUrl: 'https://youtu.be/EUlZ_Omb538?si=hiK0Pegx2YLlagoO',
     imageUrl: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=1200&q=80',
     gallery: [
       {

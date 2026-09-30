@@ -47,6 +47,7 @@ export interface Destination {
   tripType: string;
   pricePerPerson: number;
   featured: boolean;
+  videoUrl?: string;
   imageUrl: string;
   gallery: {
     url: string;

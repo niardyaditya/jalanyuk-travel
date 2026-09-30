@@ -59,7 +59,14 @@ export function JalanYukApp() {
   const [bookingInitialConfig, setBookingInitialConfig] = useState<BookingInitialConfig | undefined>(undefined);
 
   // Video Experience Modal State
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [activeVideo, setActiveVideo] = useState<{ url: string; title: string } | null>(null);
+
+  const handleOpenVideo = (url: string, title?: string) => {
+    setActiveVideo({
+      url,
+      title: title || 'Sinematik Ekspedisi Alam Nusantara — JalanYuk'
+    });
+  };
 
   // All Destinations Full Catalog Modal State
   const [isAllDestinationsOpen, setIsAllDestinationsOpen] = useState(false);
@@ -277,6 +284,7 @@ export function JalanYukApp() {
               handleOpenLightbox(activeDestination.gallery.map((g) => g.url), idx, activeDestination.name)
             }
             onOpenReviewModal={() => setReviewModalOpen(true)}
+            onOpenVideo={handleOpenVideo}
             isWishlisted={wishlistIds.includes(activeDestination.id)}
             onToggleWishlist={() => toggleWishlist(activeDestination.id)}
             onShare={() => handleShare(activeDestination.name)}
@@ -294,7 +302,7 @@ export function JalanYukApp() {
                 setActiveDestinationId(id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              onOpenVideoModal={() => setIsVideoModalOpen(true)}
+              onOpenVideoModal={handleOpenVideo}
             />
 
             {/* Floating Search & Booking Console */}
@@ -354,8 +362,10 @@ export function JalanYukApp() {
       />
 
       <ExperienceVideoModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
+        isOpen={Boolean(activeVideo)}
+        onClose={() => setActiveVideo(null)}
+        videoUrl={activeVideo?.url}
+        title={activeVideo?.title}
       />
 
       <LightboxModal

@@ -12,6 +12,7 @@ interface Slide {
   destinationId: string;
   destinationName: string;
   accent: string;
+  videoUrl: string;
 }
 
 const HERO_SLIDES: Slide[] = [
@@ -24,7 +25,8 @@ const HERO_SLIDES: Slide[] = [
     imageUrl: 'https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1600&q=85',
     destinationId: 'raja-ampat',
     destinationName: 'Raja Ampat',
-    accent: '#f39223'
+    accent: '#f39223',
+    videoUrl: 'https://youtu.be/CwspQBVrJzQ?si=lp_XASXlokpUTIMX'
   },
   {
     id: 'slide-2',
@@ -35,7 +37,8 @@ const HERO_SLIDES: Slide[] = [
     imageUrl: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=85',
     destinationId: 'labuan-bajo',
     destinationName: 'Labuan Bajo',
-    accent: '#ffb875'
+    accent: '#ffb875',
+    videoUrl: 'https://youtu.be/MDqW4aYi5Oc?si=_EJuz8VI3VuAEaKY'
   },
   {
     id: 'slide-3',
@@ -46,7 +49,8 @@ const HERO_SLIDES: Slide[] = [
     imageUrl: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=1600&q=85',
     destinationId: 'bromo-sunrise',
     destinationName: 'Bromo Tengger',
-    accent: '#f39223'
+    accent: '#f39223',
+    videoUrl: 'https://youtu.be/EUlZ_Omb538?si=hiK0Pegx2YLlagoO'
   }
 ];
 
@@ -56,7 +60,7 @@ const CUBIC_EASE = [0.16, 1, 0.3, 1] as const;
 interface HeroSliderProps {
   onStartAdventure: () => void;
   onSelectDestination: (id: string) => void;
-  onOpenVideoModal?: () => void;
+  onOpenVideoModal?: (videoUrl: string, title: string) => void;
 }
 
 export const HeroSlider: React.FC<HeroSliderProps> = ({
@@ -286,7 +290,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
                 <motion.button
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={onOpenVideoModal}
+                  onClick={() => onOpenVideoModal?.(slide.videoUrl, `${slide.destinationName} — Video Dokumentasi Ekspedisi`)}
                   className="inline-flex items-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-white text-sm font-semibold hover:bg-white/25 shadow-md cursor-pointer transform-gpu transition-colors"
                 >
                   <Play className="w-4 h-4 fill-white" />

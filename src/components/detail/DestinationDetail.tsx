@@ -15,11 +15,12 @@ import {
   ChevronDown, 
   MessageSquare, 
   ShieldCheck, 
-  ArrowRight,
-  Camera,
-  Compass,
-  Leaf,
-  Check
+  ArrowRight, 
+  Camera, 
+  Compass, 
+  Leaf, 
+  Check,
+  Play
 } from 'lucide-react';
 import { Destination } from '../../types/travel';
 
@@ -39,6 +40,7 @@ interface DestinationDetailProps {
   onOpenBooking: (config?: BookingInitialConfig) => void;
   onOpenLightbox: (index: number) => void;
   onOpenReviewModal: () => void;
+  onOpenVideo?: (videoUrl: string, title: string) => void;
   isWishlisted: boolean;
   onToggleWishlist: () => void;
   onShare: () => void;
@@ -52,6 +54,7 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({
   onOpenBooking,
   onOpenLightbox,
   onOpenReviewModal,
+  onOpenVideo,
   isWishlisted,
   onToggleWishlist,
   onShare
@@ -101,7 +104,17 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({
           </button>
 
           {/* Social & Save Triggers */}
-          <div className="flex items-center gap-2.5 self-end sm:self-auto">
+          <div className="flex flex-wrap items-center gap-2.5 self-end sm:self-auto">
+            {destination.videoUrl && onOpenVideo && (
+              <button
+                onClick={() => onOpenVideo(destination.videoUrl!, `${destination.name} — Dokumentasi Resmi 4K`)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#f39223]/50 bg-[#f39223]/15 hover:bg-[#f39223]/25 text-[#8d4f00] dark:text-[#ffb875] text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-sm"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span>Tonton Video 4K</span>
+              </button>
+            )}
+
             <button
               onClick={onShare}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#dac2af]/40 dark:border-[#283e37] bg-white dark:bg-[#1d2d28] hover:bg-[#ebf6f1] dark:hover:bg-[#253831] text-xs font-semibold text-[#141e1b] dark:text-white transition-all cursor-pointer active:scale-95 shadow-sm"
